@@ -55,7 +55,6 @@ function destroy(id) {
         main
       >
         <BaseButton
-          v-if="can.delete"
           :route-name="route('peminjaman.create')"
           :icon="mdiPlus"
           label="Add"
