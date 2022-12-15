@@ -43,9 +43,9 @@ class PeminjamanAlatController extends Controller
             'transactions' => $transactions,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('permission create'),
-                'edit' => Auth::user()->can('permission edit'),
-                'delete' => Auth::user()->can('permission delete'),
+                'create' => Auth::user()->can('peminjaman alat create'),
+                'edit' => Auth::user()->can('peminjaman alat edit'),
+                'delete' => Auth::user()->can('peminjaman alat delete'),
             ]
         ]);
     }
@@ -112,7 +112,15 @@ class PeminjamanAlatController extends Controller
     public function show($id)
     {
         $transactions = TransactionsAlat::with('user','items.item')->find($id);
-        return Inertia::render('Admin/PeminjamanAlat/Edit', compact("transactions"));
+
+        return Inertia::render('Admin/PeminjamanAlat/Edit', [
+            'transactions' => $transactions,
+            'can' => [
+                'create' => Auth::user()->can('peminjaman alat create'),
+                'edit' => Auth::user()->can('peminjaman alat edit'),
+                'delete' => Auth::user()->can('peminjaman alat delete'),
+            ]
+        ]);
     }
 
     /**

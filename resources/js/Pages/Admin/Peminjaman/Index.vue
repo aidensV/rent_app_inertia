@@ -32,6 +32,7 @@ const props = defineProps({
   },
 })
 
+
 const form = useForm({
   search: props.filters.search,
 })
@@ -55,6 +56,7 @@ function destroy(id) {
         main
       >
         <BaseButton
+          v-if="can.create"
           :route-name="route('peminjaman.create')"
           :icon="mdiPlus"
           label="Add"
@@ -109,6 +111,9 @@ function destroy(id) {
                 <Sort label="Item" attribute="item" />
               </th>
               <th>
+                <Sort label="Tanggal" attribute="date_trx" />
+              </th>
+              <th>
                 <Sort label="Waktu Pinjam" attribute="start_time" />
               </th>
               <th>
@@ -117,7 +122,7 @@ function destroy(id) {
                 <th>
                   <Sort label="Status" attribute="status" />
                 </th>
-              <th v-if="can.edit || can.delete">Actions</th>
+              <th v-if="can.approve || can.delete">Actions</th>
             </tr>
           </thead>
 
@@ -139,9 +144,13 @@ function destroy(id) {
                 <td data-label="Item">
                   {{ transaction.item.name }}
                 </td>
+                <td data-label="Item">
+                  {{ transaction.trx_date }}
+                </td>
                   <td data-label="Item">
                     {{ transaction.start_time.substring(0, 5) }}
                   </td>
+                  
                   <td data-label="Item">
                     {{ transaction.end_time.substring(0, 5) }}
                   </td>
@@ -149,13 +158,13 @@ function destroy(id) {
                     {{ transaction.status }}
                   </td>
               <td
-                v-if="can.edit || can.delete"
+                v-if="can.approve || can.delete"
                 class="before:hidden lg:w-1 whitespace-nowrap"
               >
               <template v-if="transaction.status == 'waiting'">
                 <BaseButtons type="justify-start lg:justify-end" no-wrap>
                   <BaseButton
-                    v-if="can.edit"
+                    v-if="can.approve"
                     :route-name="route('peminjaman.edit', transaction.id)"
                     color="success"
                     :icon="mdiCheckCircle"

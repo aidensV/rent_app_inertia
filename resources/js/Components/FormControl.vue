@@ -154,6 +154,7 @@ if (props.ctrlKFocus) {
       :placeholder="placeholder"
       :required="required"
     />
+    <template v-else>
     <input v-if="readonly == 'true'" :id="id" ref="inputEl" v-model="computedValue" :name="name" :inputmode="inputmode"
       :autocomplete="autocomplete" :required="required" :placeholder="placeholder" :readonly="readonly" :type="computedType"
       :class="inputElClass">
@@ -170,6 +171,7 @@ if (props.ctrlKFocus) {
       :type="computedType"
       :class="inputElClass"
     >
+    </template>
     <FormControlIcon
       v-if="icon"
       :icon="icon"

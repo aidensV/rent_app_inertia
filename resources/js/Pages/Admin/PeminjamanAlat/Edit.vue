@@ -18,12 +18,17 @@ const props = defineProps({
     type: Object,
     default: () => ({}),
   },
+  can: {
+    type: Object,
+    default: () => ({}),
+  },
 })
 
 const form = useForm({
   _method: 'put',
   username: props.transactions.user.name,
-  course_user: props.transactions.user.course,
+  username: props.transactions.user.name,
+  status: props.transactions.status,
   date_trx: props.transactions.trx_date,
   items: props.transactions.items,
   description: props.transactions.description,
@@ -102,10 +107,11 @@ const form = useForm({
             </div>
           </FormControl>
         </FormField>
-        
         <template #footer>
+          <template v-if="form.status != 'approved'">
           <BaseButtons>
             <BaseButton
+             v-if="props.can.edit"
               type="submit"
               color="success"
               label="Approve"
@@ -113,6 +119,8 @@ const form = useForm({
               :disabled="form.processing"
             />
           </BaseButtons>
+          </template>
+
         </template>
       </CardBox>
     </SectionMain>

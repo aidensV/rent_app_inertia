@@ -42,9 +42,9 @@ class LabController extends Controller
             'labs' => $labs,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('permission create'),
-                'edit' => Auth::user()->can('permission edit'),
-                'delete' => Auth::user()->can('permission delete'),
+                'create' => Auth::user()->can('manajemen lab create'),
+                'edit' => Auth::user()->can('manajemen lab edit'),
+                'delete' => Auth::user()->can('manajemen lab delete'),
             ]
         ]);
     }

@@ -41,9 +41,9 @@ class TransactionController extends Controller
             'transactions' => $transactions,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('permission create'),
-                'edit' => Auth::user()->can('permission edit'),
-                'delete' => Auth::user()->can('permission delete'),
+                'create' => Auth::user()->can('peminjaman create'),
+                'approve' => Auth::user()->can('peminjaman approve'),
+                'delete' => Auth::user()->can('peminjaman delete'),
             ]
         ]);
     }
@@ -72,7 +72,7 @@ class TransactionController extends Controller
         $endTime = str_pad($request->end_jam, 2, '0', STR_PAD_LEFT) . ':' . str_pad($request->end_menit, 2, '0', STR_PAD_LEFT);
         $transaction = new Transactions();
         $transaction->name = $request->name;
-        $transaction->trx_date = now();
+        $transaction->trx_date = $request->date_trx;
         $transaction->course = $request->course;
         $transaction->start_time = str_replace(' ', '', $startTime);
         $transaction->end_time = str_replace(' ', '', $endTime);

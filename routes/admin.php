@@ -10,6 +10,7 @@ Route::group([
     Route::resource('user', 'UserController');
     Route::resource('role', 'RoleController');
     Route::resource('tool-manage', 'ToolManageController');
+    Route::resource('form-clearance', 'FormclearanceController');
     Route::resource('lab-manage', 'LabController');
     Route::resource(
         'peminjaman-alat',

@@ -37,6 +37,7 @@ const form = useForm({
   course_user: props.user.course,
   dosen_name: '',
   dosen_nip: '',
+  date_trx:'',
 })
 </script>
 
@@ -110,6 +111,15 @@ const form = useForm({
               </div>
             </FormControl>
           
+          
+          </FormField>
+
+          <FormField label="Tanggal" :class="{ 'text-red-400': form.errors.date }">
+            <FormControl v-model="form.date_trx" type="date" placeholder="Enter date" :error="form.errors.date">
+              <div class="text-red-400 text-sm" v-if="form.errors.date">
+                {{ form.errors.date }}
+              </div>
+            </FormControl>
           
           </FormField>
         

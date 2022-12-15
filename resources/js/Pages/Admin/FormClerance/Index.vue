@@ -4,8 +4,9 @@ import {
   mdiAccountKey,
   mdiPlus,
   mdiCheckCircle,
-  mdiEye,
+  mdiTrashCan,
   mdiAlertBoxOutline,
+  
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
@@ -18,7 +19,7 @@ import Pagination from "@/Components/Admin/Pagination.vue"
 import Sort from "@/Components/Admin/Sort.vue"
 
 const props = defineProps({
-  transactions: {
+  clearance: {
     type: Object,
     default: () => ({}),
   },
@@ -36,20 +37,27 @@ const form = useForm({
   search: props.filters.search,
 })
 
+const formDelete = useForm({})
+
+function destroy(id) {
+  if (confirm("Are you sure you want to delete?")) {
+    formDelete.delete(route("form-clearance.destroy", id))
+  }
+}
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Manajemen Peminjaman" />
+    <Head title="Form Clearance" />
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiAccountKey"
-        title="Manajemen Peminjaman"
+        title="Form Clearance"
         main
       >
         <BaseButton
-         v-if="can.create"
-          :route-name="route('peminjaman-alat.create')"
+          v-if="can.create"
+          :route-name="route('form-clearance.create')"
           :icon="mdiPlus"
           label="Add"
           color="info"
@@ -65,7 +73,7 @@ const form = useForm({
         {{ $page.props.flash.message }}
       </NotificationBar>
       <CardBox class="mb-6" has-table>
-        <form @submit.prevent="form.get(route('peminjaman-alat.index'))">
+        <form @submit.prevent="form.get(route('form-clearance.index'))">
           <div class="py-2 flex">
             <div class="flex pl-4">
               <input
@@ -103,23 +111,20 @@ const form = useForm({
                 <Sort label="Course" attribute="course" />
               </th>
               <th>
-                <Sort label="Tgl Pinjam" attribute="trx_date" />
+                <Sort label="Tanggal" attribute="date" />
               </th>
               <th>
                 <Sort label="Status" attribute="status" />
               </th>
-              <th>
-                Actions
-              </th>
-               
+              <th v-if="can.edit || can.delete">Actions</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr v-for="transaction in transactions.data" :key="transaction.id">
+            <tr v-for="tool in clearance.data" :key="tool.id">
               <td data-label="Name">
                 <Link
-                  :href="route('peminjaman-alat.show', transaction.id)"
+                  :href="route('form-clearance.show', tool.id)"
                   class="
                     no-underline
                     hover:underline
@@ -127,31 +132,47 @@ const form = useForm({
                     dark:text-cyan-400
                   "
                 >
-                  {{ transaction.user.name }}
+                  {{ tool.user.name }}
                 </Link>
               </td>
-                  <td data-label="Item">
-                    {{ transaction.user.course }}
-                  </td>
-                  <td data-label="Item">
-                    {{ transaction.trx_date }}
-                  </td>
+              <td>
+                {{ tool.user.course }}
+              </td>
+              <td>
+                {{ tool.date_trx }}
+              </td>
+              <td data-label="Status">
+                <span class="bg-blue-100 text-blue-800 text-sm font-medium mr-2 px-2.5 py-0.5 rounded dark:bg-blue-200 dark:text-blue-800">{{tool.status}}</span>
+              </td>
+              <td
+                v-if="can.approve || can.delete"
+                class="before:hidden lg:w-1 whitespace-nowrap"
+              >
+              <template v-if="tool.status != 'approved' ">
+                <BaseButtons type="justify-start lg:justify-end" no-wrap>
+                    <BaseButton
+                    v-if="can.approve"
+                    :route-name="route('form-clearance.edit', tool.id)"
+                    color="success"
+                    :icon="mdiCheckCircle"
+                    small
+                  />
+                  <BaseButton
+                    v-if="can.delete"
+                    color="danger"
+                    :icon="mdiTrashCan"
+                    small
+                    @click="destroy(tool.id)"
+                  />
                   
-                  <td data-label="Item">
-                    {{ transaction.status }}
-                  </td>
-                  <td>
-                    <BaseButtons type="justify-start lg:justify-end" no-wrap>
-                      <BaseButton :route-name="route('peminjaman-alat.show', transaction.id)" color="info"
-                        :icon="mdiEye" small />
-                    </BaseButtons>
-                  </td>
-              
+                </BaseButtons>
+              </template>
+              </td>
             </tr>
           </tbody>
         </table>
         <div class="py-4">
-          <Pagination :data="transactions" />
+          <Pagination :data="clearance" />
         </div>
       </CardBox>
     </SectionMain>

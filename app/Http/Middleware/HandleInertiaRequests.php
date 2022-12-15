@@ -38,7 +38,7 @@ class HandleInertiaRequests extends Middleware
         try {
             $permission = $request->user()->getAllPermissions();
         } catch (\Throwable $th) {
-            $permissio=[];
+            $permission=[];
         }
         return array_merge(parent::share($request), [
             'auth' => [

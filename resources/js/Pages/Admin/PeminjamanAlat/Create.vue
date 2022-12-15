@@ -53,7 +53,7 @@ const form = useForm({
     <Head title="Peminjaman Alat" />
     <SectionMain>
       <SectionTitleLineWithButton :icon="mdiAccountKey" title="Peminjaman Alat" main>
-        <BaseButton :route-name="route('peminjaman.index')" :icon="mdiArrowLeftBoldOutline" label="Back" color="white"
+        <BaseButton :route-name="route('peminjaman-alat.index')" :icon="mdiArrowLeftBoldOutline" label="Back" color="white"
           rounded-full small />
       </SectionTitleLineWithButton>
       <CardBox form @submit.prevent="form.post(route('peminjaman-alat.store'))">

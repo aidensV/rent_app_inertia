@@ -50,9 +50,9 @@ class ToolManageController extends Controller
             'tools' => $tools,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('permission create'),
-                'edit' => Auth::user()->can('permission edit'),
-                'delete' => Auth::user()->can('permission delete'),
+                'create' => Auth::user()->can('manajemen alat create'),
+                'edit' => Auth::user()->can('manajemen alat edit'),
+                'delete' => Auth::user()->can('manajemen alat delete'),
             ]
         ]);
     }

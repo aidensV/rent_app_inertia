@@ -11,7 +11,7 @@ import CardBox from "@/Components/CardBox.vue"
 import BaseButton from "@/Components/BaseButton.vue"
 
 const props = defineProps({
-  tools: {
+  clearance: {
     type: Object,
     default: () => ({}),
   },
@@ -28,7 +28,7 @@ const props = defineProps({
         main
       >
         <BaseButton
-          :route-name="route('tool-manage.index')"
+          :route-name="route('form-clearance.index')"
           :icon="mdiArrowLeftBoldOutline"
           label="Back"
           color="white"
@@ -53,7 +53,37 @@ const props = defineProps({
                 Name
               </td>
               <td data-label="Name">
-                {{ tools.name }}
+                {{ clearance.user.name }}
+              </td>
+            </tr>
+            <tr>
+              <td class="
+                              p-4
+                              pl-8
+                              text-slate-500
+                              dark:text-slate-400
+                              hidden
+                              lg:block
+                            ">
+                Course
+              </td>
+              <td data-label="Name">
+                {{ clearance.user.course }}
+              </td>
+            </tr>
+            <tr>
+              <td class="
+                                          p-4
+                                          pl-8
+                                          text-slate-500
+                                          dark:text-slate-400
+                                          hidden
+                                          lg:block
+                                        ">
+                Status
+              </td>
+              <td data-label="Status">
+                {{ clearance.status }}
               </td>
             </tr>
             <tr>
@@ -68,7 +98,7 @@ const props = defineProps({
                 Description
               </td>
               <td data-label="Name">
-                {{ tools.description }}
+                {{ clearance.description }}
               </td>
             </tr>
             <tr>
@@ -84,11 +114,10 @@ const props = defineProps({
               >
                 Created
               </td>
-              <template v-if="tools.status != 'approved'">
+              
               <td data-label="Created">
-                {{ new Date(tools.created_at).toLocaleString() }}
+                {{ new Date(clearance.created_at).toLocaleString() }}
               </td>
-              </template>
             </tr>
           </tbody>
         </table>

@@ -50,7 +50,7 @@ export default [
     label: 'Peminjaman Alat'
   },
   {
-    route: 'peminjaman.index',
+    route: 'form-clearance.index',
     icon: mdiAccountGroup,
     label: 'Pengajuan Form Clearence'
   },  
