@@ -47,10 +47,6 @@ const hasSlot = computed(() => useSlots().default)
       </h1>
     </div>
     <slot v-if="hasSlot" />
-    <BaseButton
-      v-else
-      :icon="mdiCog"
-      small
-    />
+    
   </section>
 </template>

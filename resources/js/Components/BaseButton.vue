@@ -56,7 +56,6 @@ const is = computed(() => {
   if (props.href) {
     return 'a'
   }
-
   return 'button'
 })
 
@@ -106,15 +105,23 @@ const componentClass = computed(() => {
 
   return base
 })
+const targetValue = computed(() => {
+  console.log("TARGET ID")
+  console.log(props.target)
+  if (props.target){
+    return "_blank"
+  }
+  return null
+})
 </script>
 
 <template>
   <component
-    :is="is"
-    :class="componentClass"
-    :href="routeName ? routeName : href"
+  :is="is"
+  :class="componentClass"
+  :href="routeName ? routeName : href"
+  :target="targetValue"
     :type="computedType"
-    :target="target"
     :disabled="disabled"
   >
     <BaseIcon

@@ -27,7 +27,7 @@ const props = defineProps({
 const form = useForm({
   _method: 'put',
   username: props.transactions.user.name,
-  username: props.transactions.user.name,
+  course_user: props.transactions.user.course,
   status: props.transactions.status,
   date_trx: props.transactions.trx_date,
   items: props.transactions.items,

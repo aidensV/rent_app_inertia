@@ -1,8 +1,9 @@
 <script setup>
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-vue3"
 import {
-  mdiAccountKey,
-  mdiArrowLeftBoldOutline
+  mdiEmail,
+  mdiArrowLeftBoldOutline,
+  mdiAlertBoxOutline
 } from "@mdi/js"
 import LayoutAuthenticated from "@/Layouts/LayoutAuthenticated.vue"
 import SectionMain from "@/Components/SectionMain.vue"
@@ -12,6 +13,7 @@ import FormField from '@/Components/FormField.vue'
 import FormControl from '@/Components/FormControl.vue'
 import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
+import NotificationBar from "@/Components/NotificationBar.vue"
 
 const props = defineProps({
   user: {
@@ -23,7 +25,6 @@ const props = defineProps({
 const form = useForm({
   name: '',
   description : '',
-  type:'lab',
   username: props.user.name,
   course_user: props.user.course,
 })
@@ -31,25 +32,25 @@ const form = useForm({
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Pengajuan Clearance" />
+    <Head title="Kritik & Saran" />
     <SectionMain>
       <SectionTitleLineWithButton
-        :icon="mdiAccountKey"
-        title="Pengajuan Clearance"
+        :icon="mdiEmail"
+        title="Kritik & Saran"
         main
       >
-        <BaseButton
-          :route-name="route('form-clearance.index')"
-          :icon="mdiArrowLeftBoldOutline"
-          label="Back"
-          color="white"
-          rounded-full
-          small
-        />
+       
       </SectionTitleLineWithButton>
+         <NotificationBar
+          v-if="$page.props.flash.message"
+          color="success"
+          :icon="mdiAlertBoxOutline"
+        >
+          {{ $page.props.flash.message }}
+        </NotificationBar>
       <CardBox
         form
-        @submit.prevent="form.post(route('form-clearance.store'))"
+        @submit.prevent="form.post(route('kritik.store'))"
       >
         <FormField label="Peminjam" :class="{ 'text-red-400': form.errors.name }">
           <FormControl v-model="form.username" readonly="true" type="text" placeholder="Enter Name" :error="form.errors.name">
@@ -68,11 +69,15 @@ const form = useForm({
           </FormControl>
         
         </FormField>
-          <FormField>
-            <FormControl v-model="form.type" type="hidden" >
-              
+
+              <FormField label="Kritik & Saran" >
+            <FormControl v-model="form.description" type="text" placeholder="Masukan Kritik & Saran">
+             
             </FormControl>
+        
           </FormField>
+          
+          
       
         <template #footer>
           <BaseButtons>

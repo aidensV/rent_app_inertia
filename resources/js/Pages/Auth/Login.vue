@@ -43,16 +43,16 @@ const submit = () => {
 <template>
   <LayoutGuest>
     <Head title="Login" />
-
     <SectionFullScreen
-      v-slot="{ cardClass }"
-      bg="purplePink"
+    v-slot="{ cardClass }"
+    bg="purplePink"
     >
-      <CardBox
-        :class="cardClass"
-        form
-        @submit.prevent="submit"
-      >
+    <CardBox
+    :class="cardClass"
+    form
+    @submit.prevent="submit"
+    >
+    <h2 class="text-center text-lg hover:text-base">E-FORM LABSIM</h2>
         <FormValidationErrors />
 
         <NotificationBarInCard 
@@ -109,19 +109,9 @@ const submit = () => {
               :class="{ 'opacity-25': form.processing }"
               :disabled="form.processing"
             />
-            <BaseButton
-              v-if="canResetPassword"
-              :route-name="route('password.request')"
-              color="info"
-              outline
-              label="Remind"
-            />
+            
           </BaseButtons>
-          <Link
-            :href="route('register')"
-          >
-            Register
-          </Link>
+        
         </BaseLevel>
       </CardBox>
     </SectionFullScreen>

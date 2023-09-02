@@ -23,7 +23,25 @@ const props = defineProps({
     default: () => ({}),
   },
 })
+const hours = [];
+const minutes = [];
+const getJam = () => {
+  for (let index = 1; index < 24; index++) {
+    if (index.toString().length > 1) {
+      hours.push(index.toString())
+    }else{
+      hours.push("0"+index)
+    }
+  }
 
+  for (let index = 0; index < 60; index++) {
+    if (index.toString().length > 1) {
+      minutes.push(index.toString())
+    } else {
+      minutes.push("0" + index)
+    }
+  }
+}
 const form = useForm({
   name: '',
   description: '',
@@ -39,6 +57,7 @@ const form = useForm({
   dosen_nip: '',
   date_trx:'',
 })
+getJam()
 </script>
 
 <template>
@@ -70,15 +89,15 @@ const form = useForm({
         <FormField label="Laboratorium">
           <select id="default" v-model="form.items"
             class="bg-gray-50 border border-gray-300 text-gray-900 mb-6 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-            <option value="" selected>Pilih Laboratorium</option>
+            <option value="" selected>Nama lab yang dipinjam</option>
             <option v-for="item in items" :key="item.id" :value="item.id">
               {{ item.name }}
             </option>
           </select>
         </FormField>
 
-        <FormField label="Name Praktikum" :class="{ 'text-red-400': form.errors.name }">
-          <FormControl v-model="form.name" readonly="false" type="text" placeholder="Enter Name" :error="form.errors.name">
+        <FormField label="Praktikum" :class="{ 'text-red-400': form.errors.name }">
+          <FormControl v-model="form.name" readonly="false" type="text" placeholder="Nama praktikum" :error="form.errors.name">
             <div class="text-red-400 text-sm" v-if="form.errors.name">
               {{ form.errors.name }}
             </div>
@@ -86,7 +105,7 @@ const form = useForm({
 
         </FormField>
         <FormField label="Mata Kuliah" :class="{ 'text-red-400': form.errors.course }">
-          <FormControl v-model="form.course" type="text" placeholder="Enter Mata Kuliah" :error="form.errors.course">
+          <FormControl v-model="form.course" type="text" placeholder="Nama mata kuliah" :error="form.errors.course">
             <div class="text-red-400 text-sm" v-if="form.errors.course">
               {{ form.errors.course }}
             </div>
@@ -95,7 +114,7 @@ const form = useForm({
 
         </FormField>
           <FormField label="Dosen Pengajar" :class="{ 'text-red-400': form.errors.dosen_name }">
-            <FormControl v-model="form.dosen_name" type="text" placeholder="Enter Mata Dosen Pengajar" :error="form.errors.dosen_name">
+            <FormControl v-model="form.dosen_name" type="text" placeholder="Nama dosen pengajar" :error="form.errors.dosen_name">
               <div class="text-red-400 text-sm" v-if="form.errors.dosen_name">
                 {{ form.errors.dosen_name }}
               </div>
@@ -104,7 +123,7 @@ const form = useForm({
           
           </FormField>
           <FormField label="NIP Dosen Pengajar" :class="{ 'text-red-400': form.errors.dosen_nip }">
-            <FormControl v-model="form.dosen_nip" type="text" placeholder="Enter Mata NIP Dosen Pengajar"
+            <FormControl v-model="form.dosen_nip" type="text" placeholder="NIP dosen pengajar"
               :error="form.errors.dosen_nip">
               <div class="text-red-400 text-sm" v-if="form.errors.dosen_nip">
                 {{ form.errors.dosen_nip }}
@@ -130,11 +149,8 @@ const form = useForm({
             <div class="flex">
               <select name="hours" v-model="form.start_jam"
                 class="bg-transparent appearance-none outline-none rounded text-gray-900 text-l focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <template v-for="jam in 24" :key="jam">
-                  <option v-if="jam== '24'" :value="'00'">
-                    00
-                  </option>
-                  <option v-else :value="jam">
+                <template v-for="jam in hours" :key="jam">
+                  <option  :value="jam">
                     {{jam}}
                   </option>
                 </template>
@@ -143,11 +159,8 @@ const form = useForm({
               <span class="text-xl mr-3 ml-3 mt-1">:</span>
               <select name="minutes" v-model="form.start_menit"
                 class=" bg-transparent appearance-none outline-none text-gray-900 text-l rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <template v-for="menit in 60" :key="menit">
-                  <option v-if="menit== '60'" :value="'00'">
-                    00
-                  </option>
-                  <option v-else :value="menit">
+                <template v-for="menit in minutes" :key="menit">
+                  <option  :value="menit">
                     {{menit}}
                   </option>
                 </template>
@@ -157,46 +170,9 @@ const form = useForm({
             </FormField>
           </div>
           <div class="w-full md:w-1/2 px-3">
-            <FormField label="Jam Pengembalian" :class="{ 'text-red-400': form.errors.course }">
-              <div class="flex">
-                <select name="hours"  v-model="form.end_jam"
-                  class="bg-transparent appearance-none outline-none rounded text-gray-900 text-l focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <template v-for="jam in 24" :key="jam">
-                    <option v-if="jam== '24'" :value="'00'" selected>
-                      00
-                    </option>
-                    <option v-else :value="jam">
-                      {{jam}}
-                    </option>
-                  </template>
-            
-                </select>
-                <span class="text-xl mr-3 ml-3 mt-1">:</span>
-                <select name="minutes" v-model="form.end_menit"
-                  class=" bg-transparent appearance-none outline-none text-gray-900 text-l rounded focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                  <template v-for="menit in 60" :key="menit">
-                    <option v-if="menit== '60'" :value="'00'" selected>
-                      00
-                    </option>
-                    <option v-else :value="menit">
-                      {{menit}}
-                    </option>
-                  </template>
-                </select>
-            
-              </div>
-            </FormField>
           </div>
         </div>
         
-        <FormField label="Deskripsi" :class="{ 'text-red-400': form.errors.description }">
-          <FormControl v-model="form.description" type="text" placeholder="Enter Description"
-            :error="form.errors.description">
-            <div class="text-red-400 text-sm" v-if="form.errors.description">
-              {{ form.errors.description }}
-            </div>
-          </FormControl>
-        </FormField>
         <template #footer>
           <BaseButtons>
             <BaseButton type="submit" color="info" label="Submit" :class="{ 'opacity-25': form.processing }"

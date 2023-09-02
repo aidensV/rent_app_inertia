@@ -39,11 +39,15 @@ class FormclearanceController extends Controller
         }
 
         $cl = $cl->with('user')->paginate(5)->onEachSide(2)->appends(request()->query());
+        $canCreate = Auth::user()->can('clearance create');
+        if (FormClearance::where('user_id', Auth::user()->id)->exists()) {
+            $canCreate = false;
+        }
         return Inertia::render('Admin/FormClerance/Index', [
             'clearance' => $cl,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('clearance create'),
+                'create' => $canCreate,
                 'approve' => Auth::user()->can('clearance approve'),
                 'delete' => Auth::user()->can('clearance delete'),
             ]

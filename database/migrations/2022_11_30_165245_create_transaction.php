@@ -19,9 +19,11 @@ return new class extends Migration
             $table->unsignedBigInteger("item_id");
             $table->date("trx_date");
             $table->string("name");
+            $table->string("dosen_nip")->nullable();
+            $table->string("dosen_name")->nullable();
             $table->string("course")->nullable();
             $table->time("start_time");
-            $table->time("end_time");
+            $table->time("end_time")->nullable();
             $table->enum("status",["waiting","approved","finished","canceled"])->default("waiting");
             $table->string("description")->nullable();
             $table->timestamps();

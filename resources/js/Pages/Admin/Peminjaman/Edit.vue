@@ -14,7 +14,7 @@ import BaseButton from '@/Components/BaseButton.vue'
 import BaseButtons from '@/Components/BaseButtons.vue'
 
 const props = defineProps({
-  tools: {
+  transaction: {
     type: Object,
     default: () => ({}),
   },
@@ -22,22 +22,23 @@ const props = defineProps({
 
 const form = useForm({
   _method: 'put',
-  name: props.tools.name,
-  description: props.tools.description,
+  name: props.transaction.user.name,
+  lab_name: props.transaction.item.name,
+  description: props.transaction.description,
 })
 </script>
 
 <template>
   <LayoutAuthenticated>
-    <Head title="Update Data" />
+    <Head title="Update Selesai Peminjaman" />
     <SectionMain>
       <SectionTitleLineWithButton
         :icon="mdiAccountKey"
-        title="Update Data"
+        title="Update Selesai Peminjaman"
         main
       >
         <BaseButton
-          :route-name="route('tool-manage.index')"
+          :route-name="route('peminjaman.index')"
           :icon="mdiArrowLeftBoldOutline"
           label="Back"
           color="white"
@@ -47,7 +48,7 @@ const form = useForm({
       </SectionTitleLineWithButton>
       <CardBox
         form
-        @submit.prevent="form.post(route('tool-manage.update', props.tools.id))"
+        @submit.prevent="form.post(route('peminjaman.update', props.transaction.id))"
       >
         <FormField
           label="Name"
@@ -57,6 +58,7 @@ const form = useForm({
             v-model="form.name"
             type="text"
             placeholder="Enter Name"
+            readonly="true"
             :error="form.errors.name"
           >
             <div class="text-red-400 text-sm" v-if="form.errors.name">
@@ -65,7 +67,15 @@ const form = useForm({
           </FormControl>
         </FormField>
 
-        <FormField label="Description" :class="{ 'text-red-400': form.errors.description }">
+        <FormField label="Laboratorium" :class="{ 'text-red-400': form.errors.name }">
+          <FormControl v-model="form.lab_name" type="text" readonly="true" placeholder="Enter lab_name" :error="form.errors.lab_name">
+            <div class="text-red-400 text-sm" v-if="form.errors.lab_name">
+              {{ form.errors.lab_name }}
+            </div>
+          </FormControl>
+        </FormField>
+
+        <FormField label="Keterangan" :class="{ 'text-red-400': form.errors.description }">
           <FormControl v-model="form.description" type="text" placeholder="Enter Description" :error="form.errors.name">
             <div class="text-red-400 text-sm" v-if="form.errors.description">
               {{ form.errors.description }}

@@ -37,11 +37,12 @@ class TransactionController extends Controller
         }
 
         $transactions = $transactions->with('item')->paginate(5)->onEachSide(2)->appends(request()->query());
+        $canCreate = Auth::user()->can('peminjaman create');
         return Inertia::render('Admin/Peminjaman/Index', [
             'transactions' => $transactions,
             'filters' => request()->all('search'),
             'can' => [
-                'create' => Auth::user()->can('peminjaman create'),
+                'create' => $canCreate,
                 'approve' => Auth::user()->can('peminjaman approve'),
                 'delete' => Auth::user()->can('peminjaman delete'),
             ]
@@ -69,13 +70,13 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $startTime = str_pad($request->start_jam, 2, '0', STR_PAD_LEFT) . ':' . str_pad($request->start_menit, 2, '0', STR_PAD_LEFT);
-        $endTime = str_pad($request->end_jam, 2, '0', STR_PAD_LEFT) . ':' . str_pad($request->end_menit, 2, '0', STR_PAD_LEFT);
+        // $endTime = str_pad("23", 2, '0', STR_PAD_LEFT) . ':' . str_pad("00", 2, '0', STR_PAD_LEFT);
         $transaction = new Transactions();
         $transaction->name = $request->name;
         $transaction->trx_date = $request->date_trx;
         $transaction->course = $request->course;
         $transaction->start_time = str_replace(' ', '', $startTime);
-        $transaction->end_time = str_replace(' ', '', $endTime);
+        // $transaction->end_time = str_replace(' ', '', $endTime);
         $transaction->item_id = $request->items;
         $transaction->user_id = Auth::user()->id;
         $transaction->description = $request->description;
@@ -119,9 +120,16 @@ class TransactionController extends Controller
      * @param  \App\Models\Transactions  $transactions
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Transactions $transactions)
+    public function update(Request $request,$id)
     {
-        //
+        $transactions = Transactions::find($id);
+        $transactions->status = "finished";
+        $transactions->status = "finished";
+        $transactions->description = $request->description;
+        $transactions->end_time = now();
+        $transactions->update();
+        return redirect()->route('peminjaman.index')
+        ->with('message', __('data has been saved successfully'));
     }
 
     /**
@@ -137,5 +145,23 @@ class TransactionController extends Controller
         $transactions->update();
         return redirect()->route('peminjaman.index')
             ->with('message', __('Cancel successfully.'));
+    }
+
+    public function reportPdf($id)
+    {
+        $transaction = Transactions::with('user','item')->find($id);
+        $pdf = app('dompdf.wrapper');
+        $pdf->getDomPDF()->set_option("enable_php", true);
+        $pdf->loadView('report.pdf.peminjaman.report', compact('transaction'));
+        return $pdf->stream('report.pdf');
+    }
+
+    public function closed($id)
+    {
+        $transaction = Transactions::with('user', 'item')->find($id);
+        return Inertia::render('Admin/Peminjaman/Edit', [
+            'transaction' => $transaction,
+        ]);
+        
     }
 }

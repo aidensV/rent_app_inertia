@@ -1,11 +1,13 @@
 import {
-  mdiAccountCircle,
+  mdiContacts,
   mdiMonitor,
-  mdiGithub,
+  mdiFormSelect,
   mdiAccountKey,
   mdiAccountEye,
   mdiAccountGroup,
-  mdiPalette
+  mdiOfficeBuilding,
+  mdiApplication,
+  mdiNotebookEdit
 } from '@mdi/js'
 
 export default [
@@ -31,47 +33,47 @@ export default [
   },
   {
     route: 'tool-manage.index',
-    icon: mdiAccountGroup,
+    icon: mdiApplication,
     label: 'Manajemen Alat'
   },
   {
     route: 'lab-manage.index',
-    icon: mdiAccountGroup,
+    icon: mdiOfficeBuilding,
     label: 'Manajemen Lab'
   },
   {
     route: 'peminjaman.index',
-    icon: mdiAccountGroup,
+    icon: mdiOfficeBuilding,
     label: 'Peminjaman Lab'
   },
   {
     route: 'peminjaman-alat.index',
-    icon: mdiAccountGroup,
+    icon: mdiApplication,
     label: 'Peminjaman Alat'
   },
   {
     route: 'form-clearance.index',
-    icon: mdiAccountGroup,
+    icon: mdiFormSelect,
     label: 'Pengajuan Form Clearence'
-  },  
+  },
   {
     route: 'peminjaman.index',
     icon: mdiAccountGroup,
     label: 'Laporan Kerusakan'
-  },  
+  },
   {
     route: 'peminjaman.index',
     icon: mdiAccountGroup,
     label: 'Panduan'
-  },  
+  },
   {
-    route: 'peminjaman.index',
-    icon: mdiAccountGroup,
+    route: 'kontak.index',
+    icon: mdiContacts,
     label: 'Kontak'
-  }, 
+  },
   {
-    route: 'peminjaman.index',
-    icon: mdiAccountGroup,
+    route: 'kritik.index',
+    icon: mdiNotebookEdit,
     label: 'Kritik & Saran'
   }, 
 

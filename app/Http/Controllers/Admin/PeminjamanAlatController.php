@@ -117,7 +117,7 @@ class PeminjamanAlatController extends Controller
             'transactions' => $transactions,
             'can' => [
                 'create' => Auth::user()->can('peminjaman alat create'),
-                'edit' => Auth::user()->can('peminjaman alat edit'),
+                'edit' => Auth::user()->can('peminjaman alat approve'),
                 'delete' => Auth::user()->can('peminjaman alat delete'),
             ]
         ]);
